@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --dark-purple: rgb(92, 45, 223);
+  --dark-purple: #5c2ddf;
   --purple: #7945ff;
   --pink: #fd6687;
   --yellow: #ffce67;
@@ -12,6 +12,10 @@ body {
   background: var(--dark-purple);
   color: white;
   font-family: var(--font-space-grotesk), Arial, Helvetica, sans-serif;
+}
+
+.darkpurple {
+  background: var(--dark-purple);
 }
 
 .lightpurple {

@@ -2,8 +2,14 @@ import React from "react";
 import CustomButton from "./CustomButton";
 import Image from "next/image";
 import Smile from "./Smile";
+import { Mode } from "fs";
 
-export default function ModeOpen({ modeOpen }: { modeOpen: boolean }) {
+interface ModeOpenProps {
+  modeOpen: boolean;
+  setGameStarted: (v: boolean) => void;
+}
+
+export default function ModeOpen({ modeOpen, setGameStarted }: ModeOpenProps) {
   return (
     <div
       className={` top-0  absolute w-full h-full ${
@@ -12,13 +18,13 @@ export default function ModeOpen({ modeOpen }: { modeOpen: boolean }) {
     >
       <Smile />
       <div className="flex flex-col w-full items-center gap-4">
-        <CustomButton className="pink">
+        <CustomButton className="pink" onClick={() => setGameStarted(true)}>
           <p className="mx-auto">Easy</p>
         </CustomButton>
-        <CustomButton className="yellow">
+        <CustomButton className="yellow" onClick={() => setGameStarted(true)}>
           <p className="mx-auto text-black">Normal</p>
         </CustomButton>
-        <CustomButton className="bg-white">
+        <CustomButton className="bg-white" onClick={() => setGameStarted(true)}>
           <p className="mx-auto text-black">Hard</p>
         </CustomButton>
       </div>

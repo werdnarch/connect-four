@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import GridCircle from "./GridCircle";
 
 interface ColumnProps {
   index: number;
@@ -8,6 +9,8 @@ interface ColumnProps {
   setIndicatorX: (value: number) => void;
   defaultX: number;
   width: number;
+  turn: "player1" | "player2";
+  setTurn: (turn: "player1" | "player2") => void;
 }
 
 export default function Column({
@@ -16,9 +19,18 @@ export default function Column({
   setIndicatorX,
   defaultX,
   width,
+  turn,
+  setTurn,
 }: ColumnProps) {
   const columnRef = useRef<HTMLDivElement | null>(null);
   const [columnX, setColumnX] = useState<number | null>(null);
+
+  const columnArray = Array.from({ length: 6 }).map((_, i) => ({
+    index: index + i,
+    turn: null,
+    picked: false,
+  }));
+
   useEffect(() => {
     const updateX = () => {
       if (columnRef.current) {
@@ -38,12 +50,10 @@ export default function Column({
       ref={columnRef}
       onMouseEnter={() => setIndicatorX(columnX ?? 0)}
       onMouseLeave={() => setIndicatorX(defaultX - width / 2)}
-      className="w-full aspect-square  h-full grid grid-cols-1 grid-rows-6 gap-1 lg:gap-5"
+      className="w-full aspect-square  h-full grid grid-cols-1 grid-rows-6 gap-1 md:gap-4 lg:gap-5"
     >
       {Array.from({ length: 6 }, (_, i: number) => (
-        <div key={i} className="w-full h-full flex items-center justify-center">
-          <div className="w-full aspect-square darkpurple border-black cursor-pointer border-t-4 md:border-t-8 shadow-[0_-2px_0px_rgba(0,0,0,1)] md:shadow-[0_-4px_0px_rgba(0,0,0,1)] rounded-full border-3"></div>
-        </div>
+        <GridCircle key={i} turn={turn} setTurn={setTurn} />
       ))}
     </div>
   );

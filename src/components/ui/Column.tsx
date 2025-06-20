@@ -13,6 +13,12 @@ interface ColumnProps {
   setTurn: (turn: "player1" | "player2") => void;
 }
 
+type CircleTypes = {
+  index: number;
+  pickedBy: "player1" | "player2" | null;
+  picked: boolean;
+};
+
 export default function Column({
   index,
   setWidth,
@@ -20,16 +26,19 @@ export default function Column({
   defaultX,
   width,
   turn,
+
   setTurn,
 }: ColumnProps) {
   const columnRef = useRef<HTMLDivElement | null>(null);
   const [columnX, setColumnX] = useState<number | null>(null);
 
-  const columnArray = Array.from({ length: 6 }).map((_, i) => ({
-    index: index + i,
-    turn: null,
-    picked: false,
-  }));
+  const [columnArray, setColumnArray] = useState<CircleTypes[]>(
+    Array.from({ length: 6 }).map((_, i) => ({
+      index: index * 6 + i + 1 - 6,
+      pickedBy: null,
+      picked: false,
+    }))
+  );
 
   useEffect(() => {
     const updateX = () => {
@@ -52,8 +61,18 @@ export default function Column({
       onMouseLeave={() => setIndicatorX(defaultX - width / 2)}
       className="w-full aspect-square  h-full grid grid-cols-1 grid-rows-6 gap-1 md:gap-4 lg:gap-5"
     >
-      {Array.from({ length: 6 }, (_, i: number) => (
-        <GridCircle key={i} turn={turn} setTurn={setTurn} />
+      {columnArray.map((circle: CircleTypes) => (
+        <GridCircle
+          key={circle.index}
+          pickedBy={circle.pickedBy}
+          turn={turn}
+          setTurn={setTurn}
+          index={circle.index}
+          picked={circle.picked}
+          setColumnArray={setColumnArray}
+          columnArray={columnArray}
+          columnIndex={index}
+        />
       ))}
     </div>
   );
